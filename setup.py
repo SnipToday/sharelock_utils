@@ -1,7 +1,7 @@
 from setuptools import setup
 
-setup(name='sharelock_utils',
-      version='0.1',
+setup(name='sharelockUtils',
+      version='0.2',
       description='Simple utils for Sharelock',
       url='',
       author='Rani',
