@@ -9,8 +9,8 @@ def create_logger(name='', debug_filename='debug.log', info_filename='info.log')
     logging.getLogger('boto3').setLevel(logging.WARNING)
     logging.getLogger('botocore').setLevel(logging.WARNING)
 
-    base_file_path = os.environ.get('logs_base_path', '')
-    syslog_path = os.environ.get('syslog_path', None)
+    base_file_path = os.environ.get('LOGS_BASE_PATH', '')
+    syslog_path = os.environ.get('SYSLOG_PATH', None)
 
     handlers = {
             "console": {
