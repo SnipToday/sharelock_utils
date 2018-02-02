@@ -2,7 +2,7 @@ import logging
 from logging.config import dictConfig
 
 
-def create_logger(name='', debug_filename='debug.log', info_filename='info.log'):
+def create_logger(name='', base_path='', debug_filename='debug.log', info_filename='info.log'):
 
     logging.getLogger('boto3').setLevel(logging.WARNING)
     logging.getLogger('botocore').setLevel(logging.WARNING)
@@ -25,7 +25,7 @@ def create_logger(name='', debug_filename='debug.log', info_filename='info.log')
                 "class": "logging.handlers.RotatingFileHandler",
                 "level": "DEBUG",
                 "formatter": "f",
-                "filename": debug_filename,
+                "filename": base_path + debug_filename,
                 "maxBytes": 10485760,
                 "backupCount": 20,
                 "encoding": "utf8"
@@ -35,7 +35,7 @@ def create_logger(name='', debug_filename='debug.log', info_filename='info.log')
                 "class": "logging.handlers.RotatingFileHandler",
                 "level": "INFO",
                 "formatter": "f",
-                "filename": info_filename,
+                "filename": base_path + info_filename,
                 "maxBytes": 10485760,
                 "backupCount": 10,
                 "encoding": "utf8"
