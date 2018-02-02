@@ -40,10 +40,35 @@ def create_logger(name='', base_path='', debug_filename='debug.log', info_filena
                 "backupCount": 10,
                 "encoding": "utf8"
             },
+            'syslog': {
+                'level': 'DEBUG',
+                'class': 'logging.handlers.SysLogHandler',
+                'formatter': 'f',
+                'facility': 'local1',
+                'address': '/dev/log',
+            },
+        },
+        loggers={
+            "elasticsearch": {
+                "level": "WARNING",
+                "propagate": "no"
+            },
+            "urllib3": {
+                "level": "WARNING",
+                "propagate": "no"
+            },
+            "tweepy": {
+                "level": "WARNING",
+                "propagate": "no"
+            },
+            "prawcore": {
+                "level": "WARNING",
+                "propagate": "no"
+            }
         },
         root={
             "level": "DEBUG",
-            "handlers": ["console", "debug_file_handler", "info_file_handler"]
+            "handlers": ["console", "debug_file_handler", "info_file_handler", "syslog"]
         }
     )
 
