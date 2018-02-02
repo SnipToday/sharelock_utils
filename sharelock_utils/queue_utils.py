@@ -3,7 +3,7 @@ from time import sleep
 import boto3
 import os
 
-from logger import create_logger
+from .logger import create_logger
 
 logger = create_logger(__name__)
 
