@@ -1,19 +1,18 @@
 import logging
 from logging.config import dictConfig
 
+import os
 
-def create_logger(name='', base_path='', debug_filename='debug.log', info_filename='info.log'):
+
+def create_logger(name='', debug_filename='debug.log', info_filename='info.log'):
 
     logging.getLogger('boto3').setLevel(logging.WARNING)
     logging.getLogger('botocore').setLevel(logging.WARNING)
 
-    logging_config = dict(
-        version=1,
-        disable_existing_loggers=False,
-        formatters={
-            'f': {'format': '%(asctime)s - %(name)-12s %(levelname)-8s %(message)s'}
-        },
-        handlers={
+    base_file_path = os.environ.get('logs_base_path', '')
+    syslog_path = os.environ.get('syslog_path', None)
+
+    handlers = {
             "console": {
                 "class": "logging.StreamHandler",
                 "level": "DEBUG",
@@ -25,7 +24,7 @@ def create_logger(name='', base_path='', debug_filename='debug.log', info_filena
                 "class": "logging.handlers.RotatingFileHandler",
                 "level": "DEBUG",
                 "formatter": "f",
-                "filename": base_path + debug_filename,
+                "filename": base_file_path + debug_filename,
                 "maxBytes": 10485760,
                 "backupCount": 20,
                 "encoding": "utf8"
@@ -35,7 +34,7 @@ def create_logger(name='', base_path='', debug_filename='debug.log', info_filena
                 "class": "logging.handlers.RotatingFileHandler",
                 "level": "INFO",
                 "formatter": "f",
-                "filename": base_path + info_filename,
+                "filename": base_file_path + info_filename,
                 "maxBytes": 10485760,
                 "backupCount": 10,
                 "encoding": "utf8"
@@ -45,10 +44,14 @@ def create_logger(name='', base_path='', debug_filename='debug.log', info_filena
                 'class': 'logging.handlers.SysLogHandler',
                 'formatter': 'f',
                 'facility': 'local1',
-                'address': '/dev/log',
+                'address': syslog_path,
             },
-        },
-        loggers={
+        }
+
+    if not syslog_path:
+        del handlers['syslog']
+
+    loggers = {
             "elasticsearch": {
                 "level": "WARNING",
                 "propagate": "no"
@@ -65,10 +68,23 @@ def create_logger(name='', base_path='', debug_filename='debug.log', info_filena
                 "level": "WARNING",
                 "propagate": "no"
             }
+        }
+
+    root_hanlders = ["console", "debug_file_handler", "info_file_handler",]
+    if syslog_path:
+      root_hanlders.append("syslog")
+
+    logging_config = dict(
+        version=1,
+        disable_existing_loggers=False,
+        formatters={
+            'f': {'format': '%(asctime)s - %(name)-12s %(levelname)-8s %(message)s'}
         },
+        handlers=handlers,
+        loggers=loggers,
         root={
             "level": "DEBUG",
-            "handlers": ["console", "debug_file_handler", "info_file_handler", "syslog"]
+            "handlers": root_hanlders
         }
     )
 
