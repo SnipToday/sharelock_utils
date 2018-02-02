@@ -8,9 +8,11 @@ from logger import create_logger
 logger = create_logger(__name__)
 
 
-def get_queue():
+def get_queue(queue_name=None):
+    if not queue_name:
+        queue_name = os.environ.get('queue_name')
     sqs = boto3.resource('sqs', region_name=os.environ.get('aws_region'))
-    queue = sqs.get_queue_by_name(QueueName=os.environ.get('queue_name'))
+    queue = sqs.get_queue_by_name(QueueName=queue_name)
     return queue
 
 
