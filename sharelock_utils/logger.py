@@ -40,7 +40,7 @@ def create_logger(name='', debug_filename='debug.log', info_filename='info.log')
                 "encoding": "utf8"
             },
             'syslog': {
-                'level': 'DEBUG',
+                'level': os.environ.get('SYSLOG_LEVEL', 'INFO'),
                 'class': 'logging.handlers.SysLogHandler',
                 'formatter': 'f',
                 'facility': 'local1',
