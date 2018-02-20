@@ -4,7 +4,7 @@ from logging.config import dictConfig
 import os
 
 
-def create_logger(name='', debug_filename='debug.log', info_filename='info.log'):
+def create_logger(name='', debug_filename='debug.log', info_filename='info.log', num_backups=5):
 
     logging.getLogger('boto3').setLevel(logging.WARNING)
     logging.getLogger('botocore').setLevel(logging.WARNING)
@@ -26,7 +26,7 @@ def create_logger(name='', debug_filename='debug.log', info_filename='info.log')
                 "formatter": "f",
                 "filename": base_file_path + debug_filename,
                 "maxBytes": 10485760,
-                "backupCount": 20,
+                "backupCount": num_backups,
                 "encoding": "utf8"
             },
 
@@ -36,7 +36,7 @@ def create_logger(name='', debug_filename='debug.log', info_filename='info.log')
                 "formatter": "f",
                 "filename": base_file_path + info_filename,
                 "maxBytes": 10485760,
-                "backupCount": 10,
+                "backupCount": num_backups,
                 "encoding": "utf8"
             },
             'syslog': {
@@ -73,12 +73,12 @@ def create_logger(name='', debug_filename='debug.log', info_filename='info.log')
     root_hanlders = ["console", "debug_file_handler", "info_file_handler",]
     if syslog_path:
       root_hanlders.append("syslog")
-
     logging_config = dict(
         version=1,
         disable_existing_loggers=False,
         formatters={
-            'f': {'format': '%(asctime)s - %(name)-12s %(levelname)-8s %(message)s'}
+            'f': {'format': '%(asctime)s - %(name)-12s %(levelname)-8s %(message)s'},
+            'syslog_f': {}
         },
         handlers=handlers,
         loggers=loggers,
