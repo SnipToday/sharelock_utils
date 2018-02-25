@@ -16,8 +16,7 @@ def create_logger(name='', debug_filename='debug.log', info_filename='info.log',
             "console": {
                 "class": "logging.StreamHandler",
                 "level": "DEBUG",
-                "formatter": "f",
-                "stream": "ext://sys.stdout"
+                "formatter": "f"
             },
 
             "debug_file_handler": {
