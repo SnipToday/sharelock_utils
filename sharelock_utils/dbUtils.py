@@ -18,8 +18,8 @@ def get_db_conn(null_pool=False):
     return engine
 
 
-def get_engine_and_base():
-    engine = get_db_conn()
+def get_engine_and_base(null_pool=False):
+    engine = get_db_conn(null_pool)
     existing_base = automap_base()
     existing_base.prepare(engine, reflect=True)
     return engine, existing_base
