@@ -148,6 +148,7 @@ class Facebook_Post_Metric_Prediction(Base, MetricMixin, FacebookMixin):
 
 
 class Post_Platform_Relevance(Base):
+    __tablename__ = 'post_platform_relevance'
     post_id = Column(String(40), ForeignKey('posts.id'), primary_key=True)
     hn_relevance = Column(Float)
 
