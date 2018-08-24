@@ -12,6 +12,7 @@ from sharelock_utils.history_meta import Versioned, versioned_session
 
 Base = declarative_base()
 
+
 def get_db_conn(null_pool=False):
     host = os.environ.get('db_host')
     name = os.environ.get('db_name')
@@ -39,6 +40,10 @@ def get_session(engine=None):
     Session = sessionmaker(bind=engine)
     versioned_session(Session)
     return Session()
+
+
+def create_tables(engine):
+    Base.metadata.create_all(engine)
 
 
 class Feed(Base):
@@ -140,6 +145,11 @@ class Facebook_Post_Metric(Versioned, Base, MetricMixin, FacebookMixin):
 
 class Facebook_Post_Metric_Prediction(Base, MetricMixin, FacebookMixin):
     pass
+
+
+class Post_Platform_Relevance(Base):
+    post_id = Column(String(40), ForeignKey('posts.id'), primary_key=True)
+    hn_relevance = Column(Float)
 
 
 def get_hash_wrapper(context):
