@@ -130,6 +130,14 @@ class Reddit_Post_Metric_Prediction(Base, MetricMixin, RedditMixin):
     pass
 
 
+class HN_Post_Metric(Versioned, Base, MetricMixin, RedditMixin):
+    pass
+
+
+class HN_Post_Metric_Prediction(Base, MetricMixin, RedditMixin):
+    pass
+
+
 class FacebookMixin(object):
     reactions = Column(Integer)
     comments = Column(Integer)
